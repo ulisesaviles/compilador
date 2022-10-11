@@ -7,6 +7,7 @@ import {
   isEndOfLine,
   isGrouper,
   isOperator,
+  isBlank,
 } from "../helpers/helpers";
 
 import { recursiveLetter } from "./recursiveLetter";
@@ -18,8 +19,9 @@ export const lexicalAnalyzer = (
   pointers: { search: number; current: number }
 ): Token[] => {
   let tokens: Token[] = [];
+
   while (true) {
-    if (isLetter(code[pointers.search])) {
+    if (isLetter(code.charAt(pointers.search))) {
       const { token, pointers: newPointers } = recursiveLetter(
         code,
         0,
@@ -27,8 +29,8 @@ export const lexicalAnalyzer = (
       );
       tokens.push(token);
       pointers = newPointers;
-    } else if (isNum(code[pointers.search])) {
-    } else if (isOperator(code[pointers.search])) {
+    } else if (isNum(code.charAt(pointers.search))) {
+    } else if (isOperator(code.charAt(pointers.search))) {
       const token: Token = [
         getOperatorID(code[pointers.search] as Operator) as string,
         code[pointers.search],
@@ -36,19 +38,29 @@ export const lexicalAnalyzer = (
       tokens.push(token);
       pointers.current = pointers.search + 1;
       pointers.search = pointers.current;
-    } else if (isComparison(code[pointers.search])) {
-    } else if (isEndOfLine(code[pointers.search])) {
+    } else if (isComparison(code.charAt(pointers.search))) {
+    } else if (isEndOfLine(code.charAt(pointers.search))) {
       const token: Token = ["END_OF_LINE", ";"];
       tokens.push(token);
       pointers.current = pointers.search + 1;
       pointers.search = pointers.current;
-    } else if (isGrouper(code[pointers.search])) {
+    } else if (isGrouper(code.charAt(pointers.search))) {
+    } else if (isBlank(code.charAt(pointers.search))) {
+      // Manage blank spaces
+      pointers.current = pointers.search + 1;
+      pointers.search = pointers.current;
+    } else {
+      // Avoid loops
+      break;
     }
+
+    if (pointers.current >= code.length || pointers.search >= code.length)
+      break;
   }
 
   return tokens;
 };
 
 export const stringifyToken = (token: Token) => {
-  return JSON.stringify(token);
+  return `(${token[0]}, ${token[1]})`;
 };
