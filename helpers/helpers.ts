@@ -26,3 +26,7 @@ export const isOperator = (str: string) => {
 export const isComparison = (str: string) => {
   return [">", ">=", "==", "!=", "<=", "<"].includes(str);
 };
+
+export const isBlank = (str: string) => {
+  return ["\n", " ", "", "\t"].includes(str);
+};
