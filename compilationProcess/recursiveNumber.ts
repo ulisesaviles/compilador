@@ -20,10 +20,18 @@ export const recursiveNumber = (
         search: pointers.search + 1,
       });
     }
+    return recursiveNumber(code, 1, {
+      current: pointers.current,
+      search: pointers.search,
+    });
   }
+  
+  const value = code.substring(pointers.current, pointers.search);
+  pointers.current = pointers.search;
+  pointers.search = pointers.current;
 
   return {
-    token: ["NUM", code.substring(pointers.current, pointers.search)],
+    token: ["NUM", value],
     pointers,
   };
 };
