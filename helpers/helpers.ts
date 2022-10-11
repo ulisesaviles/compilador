@@ -28,9 +28,13 @@ export const isOperator = (str: string) => {
 };
 
 export const isComparison = (str: string) => {
-  return [">", "=", "!", "<",].includes(str);
+  return [">", "=", "!", "<"].includes(str);
 };
 
 export const isBlank = (str: string) => {
   return ["\n", " ", "", "\t"].includes(str);
+};
+
+export const isQuote = (str: string) => {
+  return str === '"';
 };
