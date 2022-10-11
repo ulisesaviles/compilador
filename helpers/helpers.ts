@@ -19,6 +19,10 @@ export const isComment = (str: string) => {
   return str === "#";
 };
 
+export const isComma = (str: string) => {
+  return str === ",";
+};
+
 export const isOperator = (str: string) => {
   return ["+", "-", "*", "/"].includes(str);
 };

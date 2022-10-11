@@ -8,6 +8,7 @@ import {
   isGrouper,
   isOperator,
   isBlank,
+  isComma,
 } from "../helpers/helpers";
 
 import { recursiveLetter } from "./recursiveLetter";
@@ -91,6 +92,16 @@ export const lexicalAnalyzer = (
 
       const token: Token = [
         "COMMENT",
+        code[pointers.search]
+      ];
+      tokens.push(token);
+      pointers.current = pointers.search + 1;
+      pointers.search = pointers.current;
+      
+    } else if (isComma(code.charAt(pointers.search))){
+
+      const token: Token = [
+        "COMMA",
         code[pointers.search]
       ];
       tokens.push(token);

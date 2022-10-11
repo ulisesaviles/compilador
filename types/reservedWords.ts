@@ -7,4 +7,10 @@ export type ReservedWord =
   | "CASE"
   | "DEFAULT"
   | "BREAK"
-  | "FOR";
+  | "FOR"
+  | "var"
+  | "string"
+  | "number"
+  | "bool"
+  | "true"
+  | "false";

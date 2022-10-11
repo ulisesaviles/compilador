@@ -32,7 +32,7 @@ export const recursiveLetter = (
   pointers.search = pointers.current;
   if (Object.keys(reservedWords).includes(value))
     return {
-      token: [reservedWords[value as ReservedWord], value],
+      token: [reservedWords[value as ReservedWord].toUpperCase(), value],
       pointers,
     };
 

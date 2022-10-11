@@ -20,12 +20,34 @@ export const recursiveNumber = (
         search: pointers.search + 1,
       });
     }
-    return recursiveNumber(code, 1, {
+    else if(code.charAt(pointers.search) === '.' ) {
+      return recursiveNumber(code, 1, {
+        current: pointers.current,
+        search: pointers.search + 1,
+      });
+    }
+    return recursiveNumber(code, 2, {
       current: pointers.current,
       search: pointers.search,
     });
   }
-  
+  else if (state === 1) {
+    if (isNum(code[pointers.search])) {
+      return recursiveNumber(code, 1, {
+        ...pointers,
+        search: pointers.search + 1,
+      });
+    }
+    const value = code.substring(pointers.current, pointers.search);
+    pointers.current = pointers.search;
+    pointers.search = pointers.current;
+
+    return {
+      token: ["DECIMAL", value],
+      pointers,
+    };
+  }
+
   const value = code.substring(pointers.current, pointers.search);
   pointers.current = pointers.search;
   pointers.search = pointers.current;

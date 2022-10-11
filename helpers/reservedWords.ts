@@ -8,4 +8,10 @@ export const reservedWords = {
   DEFAULT: "DEFAULT",
   BREAK: "BREAK",
   FOR: "FOR",
+  var: "var",
+  bool: "bool",
+  string: "string",
+  number: "number",
+  true: "true",
+  false: "false",
 };
