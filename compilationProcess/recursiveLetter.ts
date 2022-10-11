@@ -14,7 +14,7 @@ export const recursiveLetter = (
 } => {
   // Keeps looking for letters
   if (state === 0) {
-    if (isLetter(code[pointers.search])) {
+    if (isLetter(code.charAt(pointers.search))) {
       return recursiveLetter(code, 0, {
         current: pointers.current,
         search: pointers.search + 1,
@@ -22,13 +22,13 @@ export const recursiveLetter = (
     }
     return recursiveLetter(code, 1, {
       current: pointers.current,
-      search: pointers.search - 1,
+      search: pointers.search,
     });
   }
 
   // Maps value to a reserved keyword
   const value = code.substring(pointers.current, pointers.search);
-  pointers.current = pointers.search + 1;
+  pointers.current = pointers.search;
   pointers.search = pointers.current;
   if (Object.keys(reservedWords).includes(value))
     return {
