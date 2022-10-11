@@ -53,7 +53,7 @@ const Home: NextPage = () => {
             const index = tokens.indexOf(token);
             return (
               <div key={index} className={styles.lineContainer}>
-                <p className={styles.lineNum}>{index}</p>
+                <p className={styles.lineNum}>{index + 1}</p>
                 <p className={styles.outputLine}>{stringifyToken(token)}</p>
               </div>
             );
