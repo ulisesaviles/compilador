@@ -4,10 +4,11 @@ import { FormEvent, useState } from "react";
 // Next imports
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 
 // Styles
 import styles from "../styles/Home.module.css";
+
+// Local imports
 import {
   lexicalAnalyzer,
   stringifyToken,
@@ -24,7 +25,10 @@ const Home: NextPage = () => {
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const tokens = lexicalAnalyzer(code);
+    const tokens = lexicalAnalyzer(code, {
+      current: 0,
+      search: 0,
+    });
     setTokens(tokens);
   };
 
