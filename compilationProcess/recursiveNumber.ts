@@ -1,4 +1,6 @@
 import { isNum } from "../helpers/helpers";
+import { Pointers } from "../types/pointers";
+import { Token } from "../types/tokens";
 
 export const recursiveNumber = (
   code: string,
@@ -7,7 +9,10 @@ export const recursiveNumber = (
     current: number;
     search: number;
   }
-) => {
+): {
+  token: Token;
+  pointers: Pointers;
+} => {
   if (state === 0) {
     if (isNum(code[pointers.search])) {
       return recursiveNumber(code, 0, {
