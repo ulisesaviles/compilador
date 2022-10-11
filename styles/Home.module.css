@@ -1,6 +1,3 @@
-.container {
-}
-
 .main {
   padding: 5vh 5vw;
   min-height: 100vh;
@@ -47,4 +44,10 @@
 
 .outputLine {
   margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.tokenComponent {
+  margin: 0 5px;
 }

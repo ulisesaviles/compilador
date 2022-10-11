@@ -8,12 +8,14 @@ import Head from "next/head";
 // Styles
 import styles from "../styles/Home.module.css";
 
-// Local imports
-import {
-  lexicalAnalyzer,
-  stringifyToken,
-} from "../compilationProcess/lexicalAnalyzer";
+// Compilation process
+import { lexicalAnalyzer } from "../compilationProcess/lexicalAnalyzer";
+
+// Types
 import { Token } from "../types/tokens";
+
+// Components
+import { displayToken } from "../components/token";
 
 // React component
 const Home: NextPage = () => {
@@ -41,6 +43,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        {/* Input */}
         <section>
           <form onSubmit={submit} autoComplete="off" className={styles.form}>
             <textarea
@@ -52,13 +55,15 @@ const Home: NextPage = () => {
             <input type="submit" value="Submit" />
           </form>
         </section>
+
+        {/* Output */}
         <section className={styles.outputContainer}>
           {tokens.map((token) => {
             const index = tokens.indexOf(token);
             return (
               <div key={index} className={styles.lineContainer}>
                 <p className={styles.lineNum}>{index + 1}</p>
-                <p className={styles.outputLine}>{stringifyToken(token)}</p>
+                <div className={styles.outputLine}>{displayToken(token)}</div>
               </div>
             );
           })}
