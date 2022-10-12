@@ -1,4 +1,13 @@
-import { isLetter } from "../helpers/helpers";
+import {
+  isBlank,
+  isComma,
+  isComment,
+  isComparison,
+  isEndOfLine,
+  isGrouper,
+  isLetter,
+  isOperator,
+} from "../helpers/helpers";
 import { reservedWords } from "../helpers/reservedWords";
 import { Pointers } from "../types/pointers";
 import { ReservedWord } from "../types/reservedWords";
@@ -19,11 +28,25 @@ export const recursiveLetter = (
         current: pointers.current,
         search: pointers.search + 1,
       });
+    } else if (
+      isBlank(code.charAt(pointers.search)) ||
+      isEndOfLine(code.charAt(pointers.search)) ||
+      isOperator(code.charAt(pointers.search)) ||
+      isComparison(code.charAt(pointers.search)) ||
+      isComma(code.charAt(pointers.search)) ||
+      isComment(code.charAt(pointers.search)) ||
+      isGrouper(code.charAt(pointers.search))
+    ) {
+      return recursiveLetter(code, 1, {
+        current: pointers.current,
+        search: pointers.search,
+      });
+    } else {
+      throw `Invalid token: ${code.substring(
+        pointers.current,
+        pointers.search + 1
+      )}`;
     }
-    return recursiveLetter(code, 1, {
-      current: pointers.current,
-      search: pointers.search,
-    });
   }
 
   // Maps value to a reserved keyword

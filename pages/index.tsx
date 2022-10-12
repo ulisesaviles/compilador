@@ -22,16 +22,23 @@ const Home: NextPage = () => {
   // Constants
   const [code, setCode] = useState("");
   const [tokens, setTokens] = useState([] as Token[]);
+  const [error, setError] = useState(null as null | string);
 
   // Functions
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Run lexical analyzer
-    const tokens = lexicalAnalyzer(code);
+    try {
+      // Run lexical analyzer
+      const tokens = lexicalAnalyzer(code);
 
-    // Display result
-    setTokens(tokens);
+      // Display result
+      setTokens(tokens);
+
+      setError(null);
+    } catch (e) {
+      setError((e as Error).toString());
+    }
   };
 
   // JSX
@@ -58,15 +65,27 @@ const Home: NextPage = () => {
 
         {/* Output */}
         <section className={styles.outputContainer}>
-          {tokens.map((token) => {
-            const index = tokens.indexOf(token);
-            return (
-              <div key={index} className={styles.lineContainer}>
-                <p className={styles.lineNum}>{index + 1}</p>
-                <div className={styles.outputLine}>{displayToken(token)}</div>
-              </div>
-            );
-          })}
+          {error ? (
+            <div className={styles.outputLine}>
+              <p
+                style={{ color: "rgb(250, 100, 100)" }}
+                className={styles.tokenComponent}
+              >
+                ERROR:
+              </p>
+              <p className={styles.tokenComponent}>{error}</p>
+            </div>
+          ) : (
+            tokens.map((token) => {
+              const index = tokens.indexOf(token);
+              return (
+                <div key={index} className={styles.lineContainer}>
+                  <p className={styles.lineNum}>{index + 1}</p>
+                  <div className={styles.outputLine}>{displayToken(token)}</div>
+                </div>
+              );
+            })
+          )}
         </section>
       </main>
     </div>

@@ -20,7 +20,10 @@ export const recursiveComment = (
     }
   } else if (state === 1) {
     // Keeps looking for characters other than quotes
-    if (code.charAt(pointers.search) == "\n") {
+    if (
+      code.charAt(pointers.search) == "\n" ||
+      pointers.search == code.length - 1
+    ) {
       return recursiveComment(code, 2, {
         current: pointers.current,
         search: pointers.search + 1,

@@ -119,8 +119,8 @@ export const lexicalAnalyzer = (
       pointers.current = pointers.search + 1;
       pointers.search = pointers.current;
     } else {
-      // Avoid loops
-      break;
+      // Errors
+      throw `Invalid token: ${code.charAt(pointers.search)}`;
     }
 
     // Also avoid loops

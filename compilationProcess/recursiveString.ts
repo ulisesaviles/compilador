@@ -27,6 +27,12 @@ export const recursiveString = (
       });
     }
 
+    if (pointers.search >= code.length)
+      throw `Unclosed string: ${code.substring(
+        pointers.current,
+        pointers.search
+      )}`;
+
     return recursiveString(code, 1, {
       current: pointers.current,
       search: pointers.search + 1,

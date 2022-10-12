@@ -1,4 +1,4 @@
-import { isNum } from "../helpers/helpers";
+import { isLetter, isNum, isQuote } from "../helpers/helpers";
 import { Pointers } from "../types/pointers";
 import { Token } from "../types/tokens";
 
@@ -13,14 +13,22 @@ export const recursiveNumber = (
   token: Token;
   pointers: Pointers;
 } => {
+  if (
+    isLetter(code.charAt(pointers.search)) ||
+    isQuote(code.charAt(pointers.search))
+  )
+    throw `Invalid token: ${code.substring(
+      pointers.current,
+      pointers.search + 1
+    )}`;
+
   if (state === 0) {
     if (isNum(code[pointers.search])) {
       return recursiveNumber(code, 0, {
         ...pointers,
         search: pointers.search + 1,
       });
-    }
-    else if(code.charAt(pointers.search) === '.' ) {
+    } else if (code.charAt(pointers.search) === ".") {
       return recursiveNumber(code, 1, {
         current: pointers.current,
         search: pointers.search + 1,
@@ -30,8 +38,7 @@ export const recursiveNumber = (
       current: pointers.current,
       search: pointers.search,
     });
-  }
-  else if (state === 1) {
+  } else if (state === 1) {
     if (isNum(code[pointers.search])) {
       return recursiveNumber(code, 1, {
         ...pointers,
