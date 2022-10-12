@@ -16,9 +16,11 @@
 .input {
   flex: 1;
   display: flex;
-  min-height: calc(100vh - 10vh - 30px);
+  min-height: calc(100vh - 10vh - 40px);
   min-width: 50vw;
   padding: 20px 40px;
+  margin-bottom: 10px;
+  border-radius: 10px;
 }
 
 .outputContainer {
@@ -33,6 +35,8 @@
 .lineNum {
   opacity: 0.5;
   margin: 0 10px 0;
+  width: 16px;
+  text-align: right;
 }
 
 .lineContainer {
