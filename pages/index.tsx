@@ -27,10 +27,10 @@ const Home: NextPage = () => {
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const tokens = lexicalAnalyzer(code, {
-      current: 0,
-      search: 0,
-    });
+    // Run lexical analyzer
+    const tokens = lexicalAnalyzer(code);
+
+    // Display result
     setTokens(tokens);
   };
 

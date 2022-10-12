@@ -29,7 +29,10 @@ import { recursiveComment } from "./recursiveComment";
 // Actual lexical analyzer
 export const lexicalAnalyzer = (
   code: string,
-  pointers: { search: number; current: number }
+  pointers = {
+    current: 0,
+    search: 0,
+  }
 ): Token[] => {
   // Tokens
   let tokens: Token[] = [];

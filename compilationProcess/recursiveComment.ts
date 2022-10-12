@@ -1,7 +1,5 @@
-import { isComment, isLetter, isQuote } from "../helpers/helpers";
-import { reservedWords } from "../helpers/reservedWords";
+import { isComment } from "../helpers/helpers";
 import { Pointers } from "../types/pointers";
-import { ReservedWord } from "../types/reservedWords";
 import { Token } from "../types/tokens";
 
 export const recursiveComment = (
