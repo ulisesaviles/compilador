@@ -44,7 +44,7 @@ export const recursiveString = (
   pointers.current = pointers.search;
   pointers.search = pointers.current;
   return {
-    token: ["STRING_VAR", value],
+    token: ["STRING_VALUE", value],
     pointers,
   };
 };

@@ -9,9 +9,9 @@ export const reservedWords = {
   BREAK: "BREAK",
   FOR: "FOR",
   var: "var",
-  bool: "bool_TYPE",
-  string: "string_TYPE",
-  number: "number_TYPE",
+  bool: "bool",
+  string: "string",
+  number: "number",
   true: "true",
   false: "false",
 };
