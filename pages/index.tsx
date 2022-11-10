@@ -16,6 +16,7 @@ import { Token } from "../types/tokens";
 
 // Components
 import { displayToken } from "../components/token";
+import syntacticAnalyzer from "../syntacticAnalyzer/syntacticAnalyzer";
 
 // React component
 const Home: NextPage = () => {
@@ -40,6 +41,8 @@ const Home: NextPage = () => {
       setError((e as Error).toString());
     }
   };
+
+  console.log(syntacticAnalyzer());
 
   // JSX
   return (
