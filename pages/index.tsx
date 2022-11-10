@@ -9,7 +9,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 // Compilation process
-import { lexicalAnalyzer } from "../compilationProcess/lexicalAnalyzer";
+import { lexicalAnalyzer } from "../lexicalAnalyzer/lexicalAnalyzer";
 
 // Types
 import { Token } from "../types/tokens";
@@ -24,6 +24,9 @@ const Home: NextPage = () => {
   const [code, setCode] = useState("");
   const [tokens, setTokens] = useState([] as Token[]);
   const [error, setError] = useState(null as null | string);
+  const [syntacticalAnalyzerStatus, setSyntacticalAnalyzerStatus] = useState<
+    null | boolean
+  >(null);
 
   // Functions
   const submit = async (e: FormEvent<HTMLFormElement>) => {
@@ -32,17 +35,19 @@ const Home: NextPage = () => {
     try {
       // Run lexical analyzer
       const tokens = lexicalAnalyzer(code);
-
-      // Display result
       setTokens(tokens);
+
+      // TODO: Catch their errors separately
+      // Run syntacticalAnalyzer
+      setSyntacticalAnalyzerStatus(
+        syntacticAnalyzer(tokens.map((token) => token[0]))
+      );
 
       setError(null);
     } catch (e) {
       setError((e as Error).toString());
     }
   };
-
-  console.log(syntacticAnalyzer());
 
   // JSX
   return (
@@ -68,6 +73,7 @@ const Home: NextPage = () => {
 
         {/* Output */}
         <section className={styles.outputContainer}>
+          <h2>Tokens:</h2>
           {error ? (
             <div className={styles.outputLine}>
               <p
@@ -79,8 +85,7 @@ const Home: NextPage = () => {
               <p className={styles.tokenComponent}>{error}</p>
             </div>
           ) : (
-            tokens.map((token) => {
-              const index = tokens.indexOf(token);
+            tokens.map((token, index) => {
               return (
                 <div key={index} className={styles.lineContainer}>
                   <p className={styles.lineNum}>{index + 1}</p>
@@ -89,6 +94,11 @@ const Home: NextPage = () => {
               );
             })
           )}
+
+          <h2>Syntactical analyzer status:</h2>
+          <p className={styles.lineNum}>
+            {JSON.stringify(syntacticalAnalyzerStatus)}
+          </p>
         </section>
       </main>
     </div>
