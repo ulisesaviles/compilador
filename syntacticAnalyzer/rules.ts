@@ -12,4 +12,10 @@ blockOfCode -> statement | for | if
 8. for: FOR (ID=number, comparison, number) { blockOfCode* }
 */
 
-export const rules = {};
+const rules: { [rule: string]: string[] } = {
+  declaration: ["VAR STRING ID ASSIGNATION STRING_VALUE END_OF_LINE"],
+  END_OF_LINE: [";"],
+  ASSIGNATION: ["="],
+};
+
+export default rules;
