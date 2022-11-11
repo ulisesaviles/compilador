@@ -1,27 +1,55 @@
 import rules from "./rules";
 const defaultInput = ["VAR", "string", "a", "=", '"VALUE"', ";"];
 
-const getInputMatchesInProduction = (stack: string[], production: string) => {
+const getInputMatchesInProduction = (input: string[], production: string, currentIndex: number = 0) => {
   let matches = 0;
   let i = 0;
   let elements = production.split(" ");
   while (true) {
+    console.log(`${i + currentIndex} < ${input.length} &&
+    ${i + currentIndex} < ${elements.length}`)
     if (
-      i < stack.length - 1 &&
-      i < elements.length &&
-      stack[stack.length - (i + 1)] === elements[i]
+      i + currentIndex < input.length &&
+      i <= elements.length
     ) {
-      // Check index
-      matches++;
-      i++;
+      console.log(i);
+      console.log(`${input[currentIndex + i]} === ${elements[i]}`, currentIndex)
+      if (input[currentIndex + i] === elements[i]) {
+        console.log('ENTRÓ');
+        // Check index
+        matches++;
+        i++;
+      }
+      else if (rules[elements[i]]){
+        //THIS IS MAKING THE WHOLE SHEET LOOP INFINETELY
+        const currentProduction = rules[elements[i]];
+        for (let prod in currentProduction) {
+          const foundMatches = getInputMatchesInProduction(input, prod, currentIndex + i);
+          if (foundMatches > 0) {
+            matches++;
+            i++;
+            break;
+          }
+        }
+      }
+      else break;
     } else break;
   }
   return matches;
 };
+//Dennis guapo
+const getBlockOfCodeBranch = (currentInput: string) => {
+  for (let i = 0; i < 4; i++) {
+    const production = rules["BLOCK_OF_CODE"][i];
+    const rulesFromProduction = rules[production];
+    if (rulesFromProduction[0].split(" ")[0] === currentInput) return production;
+  }
+  return "epsilon";
+}
 
 const syntacticAnalyzer = (input = defaultInput): boolean => {
   try {
-    let stack = ["$", "declaration"];
+    let stack = ["$", "BLOCK_OF_CODE"];
     // let inputAsArr = input.split(" ");
     let i = 0;
 
@@ -29,8 +57,7 @@ const syntacticAnalyzer = (input = defaultInput): boolean => {
       console.log("Stack: ", JSON.stringify(stack));
       let top = stack.pop() as string;
       console.log("Top: " + top);
-      console.log(stack.length);
-      if (stack.length === 0) return true;
+      if (stack.length === 0 || top === "$") return true;
       else if (top === input[i]) i++;
       else {
         let productions = rules[top];
@@ -39,10 +66,21 @@ const syntacticAnalyzer = (input = defaultInput): boolean => {
           stack.push(...productions[0].split(" ").reverse());
         else {
           console.log(`Input actual: ${input[i]}`);
+          if (top === 'BLOCK_OF_CODE') {
+            const selection = getBlockOfCodeBranch(input[i]);
+            console.log(`Se eligio: ${selection}`);
+            if (selection === "epsilon") continue;
+            if (selection) {
+              stack.push(...(selection as string).split(" ").reverse());
+              continue;
+            }
+            else {
+              throw `Syntactical analyzer error.`;
+            }
+          }
           productions.forEach((production) => {
             if (production.includes(input[i])) {
-              // Check this if
-              let matches = getInputMatchesInProduction(stack, production);
+              let matches = getInputMatchesInProduction(input, production, i);
               matchesPerProduction[production] = matches;
             }
           });
