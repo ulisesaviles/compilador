@@ -16,7 +16,7 @@ import { Token } from "../types/tokens";
 
 // Components
 import { displayToken } from "../components/token";
-import syntacticAnalyzer from "../syntacticAnalyzer/syntacticAnalyzer";
+import syntacticAnalyzer from "../syntacticAnalyzer/syntacticalAnalyzer";
 
 // React component
 const Home: NextPage = () => {
