@@ -35,7 +35,7 @@ const getNumOfBlocksOfCode = (input: string[], index?: number) => {
       } else if (element === "BRACES_CLOSED") break;
     }
   }
-  console.log(`Had ${blocks.length} blocks of code.`);
+
   return blocks;
 };
 
@@ -50,7 +50,7 @@ const getBestProduction = (
 } => {
   let matchesPerProduction: { [key: string]: number } = {};
   productions.forEach((production) => {
-    let [matches] = getInputMatchesInProduction(
+    let [matches, index] = getInputMatchesInProduction(
       input,
       currentIndex,
       production
@@ -63,8 +63,6 @@ const getBestProduction = (
   );
   const bestProductionMatches = Math.max(...matches);
   input[currentIndex];
-  // console.log(JSON.stringify(productions));
-  // console.log(JSON.stringify(matches));
   const selectedProductionIndex = matches.indexOf(bestProductionMatches);
   return {
     production: productions[selectedProductionIndex],
@@ -78,9 +76,6 @@ const getInputMatchesInProduction = (
   inputIndex: number = 0,
   production: string
 ): [number, number] => {
-  // console.log(
-  //   `Will look for matches from ${production} starting at ${input[inputIndex]}`
-  // );
   let matches = 0;
   const itemsInProduction = production.split(" ");
   // Iterate
@@ -103,7 +98,6 @@ const getInputMatchesInProduction = (
         inputIndex,
         productionsOfVariable
       );
-      // console.log(`${productionElement} was set to: ${selectedProduction}`);
       matches += matchesFound;
     } else {
       break;
@@ -117,6 +111,7 @@ const getBlockOfCodePath = (currentInput: string) => {
   for (let i = 0; i < 4; i++) {
     const production = rules["BLOCK_OF_CODE"][i];
     const rulesFromProduction = rules[production];
+    // console.log(`${rulesFromProduction[0].split(" ")[0]} === ${currentInput}`); // BREAK
     if (rulesFromProduction[0].split(" ")[0] === currentInput)
       return production;
   }
@@ -133,7 +128,7 @@ const syntacticalAnalyzer = (input = defaultInput): boolean => {
     while (stack) {
       console.log("Stack: ", JSON.stringify(stack));
       let stackItem = stack.pop() as string;
-      console.log("Top: " + stackItem, "Input: ", input[i]);
+      // console.log("Top: " + stackItem, "Input: ", input[i]);
 
       // If top is $ or stack is empty, search is done and successful
       if (stackItem === "$" && i >= input.length - 1) return true;
@@ -148,12 +143,12 @@ const syntacticalAnalyzer = (input = defaultInput): boolean => {
           stack.push(...productions[0].split(" ").reverse());
         // Otherwise, analyze which is the best option
         else {
-          console.log(`Input actual: ${input[i]}`);
+          // console.log(`Input actual: ${input[i]}`);
 
           // If last element of stack is BLOCK_OF_CODE, use a special function to select the path it should follow
           if (stackItem === "BLOCK_OF_CODE") {
             const selection = getBlockOfCodePath(input[i]);
-            console.log(`Se eligio el path: ${selection}`);
+            // console.log(`Se eligio el path: ${selection}`);
             if (selection === "epsilon") continue;
             if (i !== 0) stack.push(...getNumOfBlocksOfCode(input, i));
             if (selection) {

@@ -18,6 +18,7 @@ const rules: { [rule: string]: string[] } = {
     "IF_SENTENCE",
     "SWITCH_SENTENCE",
     "FOR_SENTENCE",
+    "BREAK END_OF_LINE",
     // "BLOCK_OF_CODE BLOCK_OF_CODE",
     "epsilon",
   ],
