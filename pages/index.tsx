@@ -23,30 +23,54 @@ const Home: NextPage = () => {
   // Constants
   const [code, setCode] = useState("");
   const [tokens, setTokens] = useState([] as Token[]);
-  const [error, setError] = useState(null as null | string);
+  const [errors, setErrors] = useState<{
+    lexical: null | string;
+    syntactical: null | string;
+  }>({
+    lexical: null,
+    syntactical: null,
+  });
   const [syntacticalAnalyzerStatus, setSyntacticalAnalyzerStatus] = useState<
     null | boolean
   >(null);
+  const [syntacticalAnalyzerLogs, setSyntacticalAnalyzerLogs] = useState<
+    string[]
+  >([]);
 
   // Functions
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    let tokens: Token[] = [];
 
     try {
       // Run lexical analyzer
-      const tokens = lexicalAnalyzer(code);
+      tokens = lexicalAnalyzer(code);
       setTokens(tokens);
-
-      // TODO: Catch their errors separately
-      // Run syntacticalAnalyzer
-      setSyntacticalAnalyzerStatus(
-        syntacticAnalyzer(tokens.map((token) => token[0]))
-      );
-
-      setError(null);
     } catch (e) {
-      setError((e as Error).toString());
+      setErrors({
+        syntactical: null,
+        lexical: (e as Error).toString(),
+      });
+      setSyntacticalAnalyzerLogs([]);
+      return;
     }
+
+    try {
+      // Run syntacticalAnalyzer
+      const { logs, status } = syntacticAnalyzer(
+        tokens.map((token) => token[0])
+      );
+      setSyntacticalAnalyzerLogs(logs);
+    } catch (e) {
+      setErrors({
+        lexical: null,
+        syntactical: (e as Error).toString(),
+      });
+      return;
+    }
+
+    // No errors
+    setErrors({ lexical: null, syntactical: null });
   };
 
   // JSX
@@ -73,32 +97,62 @@ const Home: NextPage = () => {
 
         {/* Output */}
         <section className={styles.outputContainer}>
-          <h2>Tokens:</h2>
-          {error ? (
+          <h2 className={styles.outputTitle}>Output:</h2>
+          {errors.lexical ? (
             <div className={styles.outputLine}>
               <p
                 style={{ color: "rgb(250, 100, 100)" }}
                 className={styles.tokenComponent}
               >
-                ERROR:
+                LEXICAL ANALYZER ERROR:
               </p>
-              <p className={styles.tokenComponent}>{error}</p>
+              <p className={styles.tokenComponent}>{errors.lexical}</p>
             </div>
           ) : (
-            tokens.map((token, index) => {
-              return (
-                <div key={index} className={styles.lineContainer}>
-                  <p className={styles.lineNum}>{index + 1}</p>
-                  <div className={styles.outputLine}>{displayToken(token)}</div>
-                </div>
-              );
-            })
+            <div className={styles.outputSectionContainer}>
+              <h3 className={styles.outputSectionTitle}>
+                {tokens.length > 0 ? "Tokens:" : null}
+              </h3>
+              {tokens.map((token, index) => {
+                return (
+                  <div key={index} className={styles.lineContainer}>
+                    <p className={styles.lineNum}>{index + 1}</p>
+                    <div className={styles.outputLine}>
+                      {displayToken(token)}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
 
-          <h2>Syntactical analyzer status:</h2>
-          <p className={styles.lineNum}>
-            {JSON.stringify(syntacticalAnalyzerStatus)}
-          </p>
+          {errors.syntactical ? (
+            <div className={styles.outputLine}>
+              <p
+                style={{ color: "rgb(250, 100, 100)" }}
+                className={styles.tokenComponent}
+              >
+                SYNTACTICAL ANALYZER ERROR:
+              </p>
+              <p className={styles.tokenComponent}>{errors.syntactical}</p>
+            </div>
+          ) : (
+            <div className={styles.outputSectionContainer}>
+              <h3 className={styles.outputSectionTitle}>
+                {syntacticalAnalyzerLogs.length > 0
+                  ? "Syntactical analyzer logs:"
+                  : null}
+              </h3>
+              {syntacticalAnalyzerLogs.map((log, index) => {
+                return (
+                  <div key={index} className={styles.lineContainer}>
+                    <p className={styles.lineNum}>{index + 1}</p>
+                    <div className={styles.outputLine}>{log}</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
       </main>
     </div>

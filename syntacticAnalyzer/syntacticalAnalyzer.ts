@@ -118,20 +118,26 @@ const getBlockOfCodePath = (currentInput: string) => {
   return "epsilon";
 };
 
-const syntacticalAnalyzer = (input = defaultInput): boolean => {
+const syntacticalAnalyzer = (
+  input = defaultInput
+): { status: boolean; logs: string[] } => {
+  let logs = [];
+
   try {
     let stack = ["$", "BLOCK_OF_CODE"];
     stack.push(...getNumOfBlocksOfCode(input));
     let i = 0;
-    console.log("Complete input: ", JSON.stringify(input));
+    logs.push(`Complete input: ${JSON.stringify(input).replaceAll(",", ", ")}`);
 
     while (stack) {
-      console.log("Stack: ", JSON.stringify(stack));
+      logs.push(`Stack: ${JSON.stringify(stack).replaceAll(",", ", ")}`);
       let stackItem = stack.pop() as string;
-      // console.log("Top: " + stackItem, "Input: ", input[i]);
 
       // If top is $ or stack is empty, search is done and successful
-      if (stackItem === "$" && i >= input.length - 1) return true;
+      if (stackItem === "$" && i >= input.length - 1) {
+        logs.push("Success🎉");
+        return { status: true, logs };
+      }
       // If current input element (which is a TERMINAL) equals last element on stack,  move to the next input element
       else if (stackItem === input[i]) i++;
       // Otherwise this means top is a VARIABLE
@@ -149,7 +155,10 @@ const syntacticalAnalyzer = (input = defaultInput): boolean => {
           if (stackItem === "BLOCK_OF_CODE") {
             const selection = getBlockOfCodePath(input[i]);
             // console.log(`Se eligio el path: ${selection}`);
-            if (selection === "epsilon") continue;
+            if (selection === "epsilon") {
+              logs.push(`Se eligió: epsilon`);
+              continue;
+            }
             if (i !== 0) stack.push(...getNumOfBlocksOfCode(input, i));
             if (selection) {
               stack.push(...(selection as string).split(" ").reverse());
@@ -164,13 +173,16 @@ const syntacticalAnalyzer = (input = defaultInput): boolean => {
 
           // Add production items to the stack
           if (bestProduction.matches > 0) {
-            console.log(`Se eligió: ${bestProduction.production}`);
+            logs.push(`Se eligió: ${bestProduction.production}`);
             stack.push(
               ...(bestProduction.production as string).split(" ").reverse()
             );
           }
           // Use epsilon if possible
-          else if (productions.includes("epsilon")) continue;
+          else if (productions.includes("epsilon")) {
+            logs.push(`Se eligió: epsilon`);
+            continue;
+          }
           // Throw error
           else {
             throw "Syntactical analyzer error: There was no best production.";
@@ -183,7 +195,7 @@ const syntacticalAnalyzer = (input = defaultInput): boolean => {
   } catch (e) {
     throw `Syntactical analyzer error: ERROR.`;
   }
-  return false;
+  return { status: false, logs };
 };
 
 export default syntacticalAnalyzer;
