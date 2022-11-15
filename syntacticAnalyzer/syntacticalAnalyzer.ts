@@ -155,8 +155,8 @@ const syntacticalAnalyzer = (
           if (stackItem === "BLOCK_OF_CODE") {
             const selection = getBlockOfCodePath(input[i]);
             // console.log(`Se eligio el path: ${selection}`);
+            logs.push(`Se eligió: ${selection}`);
             if (selection === "epsilon") {
-              logs.push(`Se eligió: epsilon`);
               continue;
             }
             if (i !== 0) stack.push(...getNumOfBlocksOfCode(input, i));
