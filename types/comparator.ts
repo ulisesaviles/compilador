@@ -1,0 +1,8 @@
+export enum Comparator {
+  LESS = 'LESS',
+  GREATER = 'GREATER',
+  LESS_OR_EQUAL = 'LESS_OR_EQUAL',
+  GREATER_OR_EQUAL = 'GREATER_OR_EQUAL',
+  DIFFERENT = 'DIFFERENT',
+  EQUALS = 'EQUALS'
+}

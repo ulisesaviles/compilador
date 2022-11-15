@@ -1,1 +1,1 @@
-export type Token = any;
+export type Token = [string, string];
