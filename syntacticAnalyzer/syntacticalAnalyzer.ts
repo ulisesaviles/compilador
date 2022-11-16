@@ -28,8 +28,7 @@ const getNumOfBlocksOfCode = (input: string[], index?: number) => {
             blocks.push("BLOCK_OF_CODE");
             break;
           }
-          if (i + 1 === input.length)
-            throw "Syntactical analyzer error: Got out of range looking for }";
+          if (i + 1 === input.length) throw "Got out of range looking for }";
         }
         // Stop searching
       } else if (element === "BRACES_CLOSED") break;
@@ -108,10 +107,9 @@ const getInputMatchesInProduction = (
 };
 
 const getBlockOfCodePath = (currentInput: string) => {
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     const production = rules["BLOCK_OF_CODE"][i];
     const rulesFromProduction = rules[production];
-    // console.log(`${rulesFromProduction[0].split(" ")[0]} === ${currentInput}`); // BREAK
     if (rulesFromProduction[0].split(" ")[0] === currentInput)
       return production;
   }
@@ -164,7 +162,7 @@ const syntacticalAnalyzer = (
               stack.push(...(selection as string).split(" ").reverse());
               continue;
             } else {
-              throw `Syntactical analyzer error: Unresolved block of code path`;
+              throw `Unresolved block of code path.`;
             }
           }
 
@@ -185,15 +183,15 @@ const syntacticalAnalyzer = (
           }
           // Throw error
           else {
-            throw "Syntactical analyzer error: There was no best production.";
+            throw `There were no matches with ${stackItem}`;
           }
         }
       } else {
-        throw `Syntactical analyzer error: Unrecognized token: ${stackItem}`;
+        throw `Error at: ${stackItem}`;
       }
     }
   } catch (e) {
-    throw `Syntactical analyzer error: ERROR.`;
+    throw (e as Error).toString();
   }
   return { status: false, logs };
 };
