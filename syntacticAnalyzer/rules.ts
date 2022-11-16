@@ -4,7 +4,7 @@ const rules: { [rule: string]: string[] } = {
     "IF_SENTENCE",
     "SWITCH_SENTENCE",
     "FOR_SENTENCE",
-    "BREAK END_OF_LINE",
+    "BREAK_SENTENCE",
     // "BLOCK_OF_CODE BLOCK_OF_CODE",
     "epsilon",
   ],
@@ -48,6 +48,7 @@ const rules: { [rule: string]: string[] } = {
   FOR_SENTENCE: [
     "FOR PARENTHESIS_OPEN DECLARATION COMMA BOOLEAN_VALUE COMMA NUMERIC_VALUE PARENTHESIS_CLOSED BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED",
   ],
+  BREAK_SENTENCE: ["BREAK END_OF_LINE"],
 };
 
 export default rules;
