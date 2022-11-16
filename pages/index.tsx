@@ -30,9 +30,6 @@ const Home: NextPage = () => {
     lexical: null,
     syntactical: null,
   });
-  const [syntacticalAnalyzerStatus, setSyntacticalAnalyzerStatus] = useState<
-    null | boolean
-  >(null);
   const [syntacticalAnalyzerLogs, setSyntacticalAnalyzerLogs] = useState<
     string[]
   >([]);
@@ -132,7 +129,7 @@ const Home: NextPage = () => {
                 style={{ color: "rgb(250, 100, 100)" }}
                 className={styles.tokenComponent}
               >
-                SYNTACTICAL ANALYZER ERROR:
+                SYNTACTICAL ERROR:
               </p>
               <p className={styles.tokenComponent}>{errors.syntactical}</p>
             </div>
