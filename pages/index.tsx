@@ -10,13 +10,13 @@ import styles from "../styles/Home.module.css";
 
 // Compilation process
 import { lexicalAnalyzer } from "../lexicalAnalyzer/lexicalAnalyzer";
+import syntacticAnalyzer from "../syntacticAnalyzer/syntacticalAnalyzer";
 
 // Types
 import { Token } from "../types/tokens";
 
 // Components
 import { displayToken } from "../components/token";
-import syntacticAnalyzer from "../syntacticAnalyzer/syntacticalAnalyzer";
 
 // React component
 const Home: NextPage = () => {
