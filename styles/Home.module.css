@@ -17,7 +17,7 @@
   flex: 1;
   display: flex;
   min-height: calc(100vh - 10vh - 40px);
-  min-width: 50vw;
+  min-width: 43vw;
   padding: 20px 40px;
   margin-bottom: 10px;
   border-radius: 10px;
@@ -25,7 +25,7 @@
 
 .outputContainer {
   display: flex;
-  width: 40vw;
+  width: 47vw;
   height: 90vh;
   overflow-y: scroll;
   padding: 20px 40px;

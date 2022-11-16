@@ -10,13 +10,13 @@ import styles from "../styles/Home.module.css";
 
 // Compilation process
 import { lexicalAnalyzer } from "../lexicalAnalyzer/lexicalAnalyzer";
+import syntacticAnalyzer from "../syntacticAnalyzer/syntacticalAnalyzer";
 
 // Types
 import { Token } from "../types/tokens";
 
 // Components
 import { displayToken } from "../components/token";
-import syntacticAnalyzer from "../syntacticAnalyzer/syntacticalAnalyzer";
 
 // React component
 const Home: NextPage = () => {
@@ -30,9 +30,6 @@ const Home: NextPage = () => {
     lexical: null,
     syntactical: null,
   });
-  const [syntacticalAnalyzerStatus, setSyntacticalAnalyzerStatus] = useState<
-    null | boolean
-  >(null);
   const [syntacticalAnalyzerLogs, setSyntacticalAnalyzerLogs] = useState<
     string[]
   >([]);
@@ -42,8 +39,8 @@ const Home: NextPage = () => {
     e.preventDefault();
     let tokens: Token[] = [];
 
+    // Lexical analyzer
     try {
-      // Run lexical analyzer
       tokens = lexicalAnalyzer(code);
       setTokens(tokens);
     } catch (e) {
@@ -55,8 +52,8 @@ const Home: NextPage = () => {
       return;
     }
 
+    // Syntactical analyzer
     try {
-      // Run syntacticalAnalyzer
       const { logs, status } = syntacticAnalyzer(
         tokens.map((token) => token[0])
       );
@@ -77,7 +74,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Lexical Analyzer</title>
+        <title>DAS Compiler</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -98,7 +95,10 @@ const Home: NextPage = () => {
         {/* Output */}
         <section className={styles.outputContainer}>
           <h2 className={styles.outputTitle}>Output:</h2>
+
+          {/* Lexical */}
           {errors.lexical ? (
+            // Errors
             <div className={styles.outputLine}>
               <p
                 style={{ color: "rgb(250, 100, 100)" }}
@@ -109,6 +109,7 @@ const Home: NextPage = () => {
               <p className={styles.tokenComponent}>{errors.lexical}</p>
             </div>
           ) : (
+            // Output
             <div className={styles.outputSectionContainer}>
               <h3 className={styles.outputSectionTitle}>
                 {tokens.length > 0 ? "Tokens:" : null}
@@ -126,17 +127,20 @@ const Home: NextPage = () => {
             </div>
           )}
 
+          {/* Syntactical */}
           {errors.syntactical ? (
+            // Errors
             <div className={styles.outputLine}>
               <p
                 style={{ color: "rgb(250, 100, 100)" }}
                 className={styles.tokenComponent}
               >
-                SYNTACTICAL ANALYZER ERROR:
+                SYNTACTICAL ERROR:
               </p>
               <p className={styles.tokenComponent}>{errors.syntactical}</p>
             </div>
           ) : (
+            // Output
             <div className={styles.outputSectionContainer}>
               <h3 className={styles.outputSectionTitle}>
                 {syntacticalAnalyzerLogs.length > 0

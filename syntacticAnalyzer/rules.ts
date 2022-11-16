@@ -1,24 +1,10 @@
-/* 
-statement -> ANYTHING;
-blockOfCode -> statement | for | if
------RULES-----
-1. assignation: var string a = 'some string';
-2. operation: (ID | number) (+ | - | * | /) (ID | number)
-3. comparison: (ID | number) (< | <= | >= | !=) (ID | number)
-4. and: (ID | comparison) AND (ID | comparison)
-5. or: (ID | comparison) OR (ID | comparison)
-6. End of line: ANYTHING;
-7. comment: # ANYTHING \n
-8. for: FOR (ID=number, comparison, number) { blockOfCode* }
-*/
-
 const rules: { [rule: string]: string[] } = {
   BLOCK_OF_CODE: [
     "DECLARATION",
     "IF_SENTENCE",
     "SWITCH_SENTENCE",
     "FOR_SENTENCE",
-    "BREAK END_OF_LINE",
+    "BREAK_SENTENCE",
     // "BLOCK_OF_CODE BLOCK_OF_CODE",
     "epsilon",
   ],
@@ -51,13 +37,10 @@ const rules: { [rule: string]: string[] } = {
   BOOLEAN_TERMINAL: ["TRUE", "FALSE", "ID", "COMPARISON"],
   IF_SENTENCE: [
     "IF PARENTHESIS_OPEN BOOLEAN_VALUE PARENTHESIS_CLOSED BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED",
-    // "IF PARENTHESIS_OPEN BOOLEAN_VALUE PARENTHESIS_CLOSED BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED ELSE_SENTENCE",
   ],
   ELSE_SENTENCE: ["ELSE BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED"],
   SWITCH_SENTENCE: [
     "SWITCH BRACES_OPEN CASES DEFAULT BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED BRACES_CLOSED",
-    // "SWITCH BRACES_OPEN CASES CASES DEFAULT BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED",
-    // "SWITCH BRACES_OPEN CASES CASES CASES DEFAULT BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED",
   ],
   CASES: [
     "CASE PARENTHESIS_OPEN BOOLEAN_VALUE PARENTHESIS_CLOSED BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED",
@@ -65,6 +48,7 @@ const rules: { [rule: string]: string[] } = {
   FOR_SENTENCE: [
     "FOR PARENTHESIS_OPEN DECLARATION COMMA BOOLEAN_VALUE COMMA NUMERIC_VALUE PARENTHESIS_CLOSED BRACES_OPEN BLOCK_OF_CODE BRACES_CLOSED",
   ],
+  BREAK_SENTENCE: ["BREAK END_OF_LINE"],
 };
 
 export default rules;
