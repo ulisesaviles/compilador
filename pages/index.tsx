@@ -21,7 +21,27 @@ import { displayToken } from "../components/token";
 // React component
 const Home: NextPage = () => {
   // Constants
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(`
+  var string a = "a";
+
+  IF (a == "a") {
+    FOR (var number b = 1;, b < 10, 1) {
+      IF (b == 5) { BREAK; }
+    }
+  }
+  
+  var bool b = true OR false;
+  
+  SWITCH {
+    CASE (b) {
+      var number c = 5 / 10;
+      BREAK;
+    }
+    DEFAULT {
+      BREAK;
+    }
+  }
+  `);
   const [tokens, setTokens] = useState([] as Token[]);
   const [errors, setErrors] = useState<{
     lexical: null | string;
@@ -87,6 +107,8 @@ const Home: NextPage = () => {
               id="input"
               className={styles.input}
               onChange={(e) => setCode(e.target.value)}
+              value={code}
+              placeholder="Enter code here..."
             />
             <input type="submit" value="Submit" />
           </form>
