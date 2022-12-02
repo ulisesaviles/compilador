@@ -147,8 +147,6 @@ const syntacticalAnalyzer = (
           stack.push(...productions[0].split(" ").reverse());
         // Otherwise, analyze which is the best option
         else {
-          // console.log(`Input actual: ${input[i]}`);
-
           // If last element of stack is BLOCK_OF_CODE, use a special function to select the path it should follow
           if (stackItem === "BLOCK_OF_CODE") {
             const selection = getBlockOfCodePath(input[i]);
